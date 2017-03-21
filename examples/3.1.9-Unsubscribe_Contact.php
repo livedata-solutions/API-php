@@ -8,19 +8,11 @@ $API = new LiveDataAPI($api_user, $api_pass, $api_id, $api_url);
 
 
 
-//Add contact
+//Unsubscribe contact
 
 $contact_email = 'scarlett@example.com';
 
-$several_attributes = array(
-	'title' => 'Mrs',
-	'firstname' => 'Scarlett',
-	'lastname' => 'Johansson',
-	'birthdate' => '1984-11-22'
-);
- 
-
-$result = $API->Add_Edit_Contact($contact_email, $several_attributes);
+$result = $API->Unsubscribe_Contact($contact_email);
 
 $decoded = json_decode($result, true);
 

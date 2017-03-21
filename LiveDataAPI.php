@@ -98,10 +98,8 @@ class LiveDataAPI
 		if ($this->checkAPI()) {
             $curl = curl_init();
 			$url = $this->joinPaths($this->fullurl, $action);
-			echo "\n" . $url . "\n";
 			$headers = $this->generateWSSEHeader();
 
-			print_r($headers);
             curl_setopt($curl, CURLOPT_URL, $url);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
@@ -110,11 +108,14 @@ class LiveDataAPI
 			curl_setopt($curl, CURLOPT_FAILONERROR, true);
             if (!is_null($request)) {
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $request);
-            }
+			} else {
+				$request = 'GET';
+			}
             if (!is_null($payload)) {
                 curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($payload));
             }
 
+			echo "\n" . $request . " " . $url . "\n";
             // make the call
 			$result = curl_exec($curl);
 
@@ -151,12 +152,8 @@ class LiveDataAPI
 	*/
 	private function generateWSSEHeader() 
 	{
-echo 'X-WSSE: UsernameToken Username="cgonzalez", PasswordDigest="Qv3d6VZb8w1nkQNXJTSXwbLhtwI=", Nonce="YTk1ZTNhZGVkMjFlYzUxOA==", Created="2017-03-21T12:44:24+01:00"' . "\n";
-
 		$created = date('c');
-
 		$nonce = substr(md5(uniqid('nonce_', true)), 0, 16);
-
 	    $nonce64 = base64_encode($nonce);
 		$passwordDigest = base64_encode(sha1($nonce . $created . $this->api_pass, true));
 		return array(sprintf(
