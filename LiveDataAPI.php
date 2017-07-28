@@ -85,6 +85,33 @@ class LiveDataAPI
 	}
 
 
+	/**
+	 * 3.14.1  Get Statistics Summary for single campaigns
+     *
+    */
+
+	public function Get_Statistics_Summary_for_single_campaigns($page=null, $fromDate=null, $toDate=null)
+	{
+		$filters = [];
+		if ($page != null) {
+			$filters['p'] = $page;
+		}
+		if ($fromDate != null) {
+			$filters['fromDate'] = $fromDate;
+		}
+		if ($toDate != null) {
+			$filters['toDate'] = $toDate;
+		}
+		if (empty($filters)) {
+			return $this->callLivedataAPI('stats/campaign');
+		} 
+		else {
+			return $this->callLivedataAPI('stats/campaign?' . http_build_query($filters));
+		}
+	}
+
+
+
 
 	public function checkAPI()
 	{  
